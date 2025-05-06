@@ -12,10 +12,10 @@ namespace COMP003B.SP25.FinalProject.DomingosC
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            var app = builder.Build();
-
             builder.Services.AddDbContext<ApplicationDbContext>(options => //builder for the database that connects the project with the database, duh
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
