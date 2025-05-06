@@ -8,6 +8,8 @@
         public string Email { get; set; } //gives the email of the mechanic 
         public string Phone { get; set; }//gives the phone number for the mechanic
 
+        public string Speciality { get; set; } //gives the mechanic a speciality (Added on second migration for a migration add)
+
         public ICollection<BookingMechanic> BookingMechanics { get; set; } //connects with the booking system.
     }
 }
