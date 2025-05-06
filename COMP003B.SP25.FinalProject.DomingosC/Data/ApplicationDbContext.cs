@@ -12,13 +12,5 @@ namespace COMP003B.SP25.FinalProject.DomingosC.Data
         public DbSet<ServiceType> ServiceTypes { get; set; } //Gets all required fields for the database to connect all the puzzle pieces together
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Mechanic> Mechanics { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder) //Here is the model builder 
-        {
-            base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<BookingMechanic>() //builds the model for the booking mechanic
-                .HasKey(bm => new { bm.BookingId, bm.MechanicId }); //looks for the booking and mechanic ids
-        }
     }
 }
