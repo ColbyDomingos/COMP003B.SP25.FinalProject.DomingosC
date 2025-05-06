@@ -14,7 +14,7 @@ namespace COMP003B.SP25.FinalProject.DomingosC
 
             var app = builder.Build();
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            builder.Services.AddDbContext<ApplicationDbContext>(options => //builder for the database that connects the project with the database, duh
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Configure the HTTP request pipeline.
