@@ -34,5 +34,6 @@ namespace COMP003B.SP25.FinalProject.DomingosC.Data
                 .WithMany(m => m.BookingMechanics)
                 .HasForeignKey(bm => bm.MechanicId);
         }
+        public DbSet<COMP003B.SP25.FinalProject.DomingosC.Models.BookingMechanic> BookingMechanic { get; set; } = default!;
     }
 }
