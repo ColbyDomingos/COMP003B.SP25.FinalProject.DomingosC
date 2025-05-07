@@ -26,6 +26,7 @@ namespace COMP003B.SP25.FinalProject.DomingosC
             }
 
 
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
