@@ -22,7 +22,7 @@ namespace COMP003B.SP25.FinalProject.DomingosC.Controllers
         // GET: BookingMechanics
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.BookingMechanic.Include(b => b.Booking).Include(b => b.Mechanic);
+            var applicationDbContext = _context.BookingMechanics.Include(b => b.Booking).Include(b => b.Mechanic);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace COMP003B.SP25.FinalProject.DomingosC.Controllers
                 return NotFound();
             }
 
-            var bookingMechanic = await _context.BookingMechanic
+            var bookingMechanic = await _context.BookingMechanics
                 .Include(b => b.Booking)
                 .Include(b => b.Mechanic)
                 .FirstOrDefaultAsync(m => m.BookingId == id);
@@ -80,7 +80,7 @@ namespace COMP003B.SP25.FinalProject.DomingosC.Controllers
                 return NotFound();
             }
 
-            var bookingMechanic = await _context.BookingMechanic.FindAsync(id);
+            var bookingMechanic = await _context.BookingMechanics.FindAsync(id);
             if (bookingMechanic == null)
             {
                 return NotFound();
@@ -135,7 +135,7 @@ namespace COMP003B.SP25.FinalProject.DomingosC.Controllers
                 return NotFound();
             }
 
-            var bookingMechanic = await _context.BookingMechanic
+            var bookingMechanic = await _context.BookingMechanics
                 .Include(b => b.Booking)
                 .Include(b => b.Mechanic)
                 .FirstOrDefaultAsync(m => m.BookingId == id);
@@ -152,10 +152,10 @@ namespace COMP003B.SP25.FinalProject.DomingosC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var bookingMechanic = await _context.BookingMechanic.FindAsync(id);
+            var bookingMechanic = await _context.BookingMechanics.FindAsync(id);
             if (bookingMechanic != null)
             {
-                _context.BookingMechanic.Remove(bookingMechanic);
+                _context.BookingMechanics.Remove(bookingMechanic);
             }
 
             await _context.SaveChangesAsync();
@@ -164,7 +164,7 @@ namespace COMP003B.SP25.FinalProject.DomingosC.Controllers
 
         private bool BookingMechanicExists(int id)
         {
-            return _context.BookingMechanic.Any(e => e.BookingId == id);
+            return _context.BookingMechanics.Any(e => e.BookingId == id);
         }
     }
 }

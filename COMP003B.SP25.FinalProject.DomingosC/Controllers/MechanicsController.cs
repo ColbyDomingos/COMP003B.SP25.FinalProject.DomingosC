@@ -57,7 +57,7 @@ namespace COMP003B.SP25.FinalProject.DomingosC.Controllers
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,Phone,Speciality")] Mechanic mechanic)
         {
             if (ModelState.IsValid)
-            {
+            { 
                 _context.Add(mechanic);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

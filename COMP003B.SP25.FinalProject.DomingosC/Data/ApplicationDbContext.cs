@@ -13,6 +13,7 @@ namespace COMP003B.SP25.FinalProject.DomingosC.Data
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Mechanic> Mechanics { get; set; }
 
+        public DbSet<COMP003B.SP25.FinalProject.DomingosC.Models.BookingMechanic> BookingMechanics { get; set; } = default!;
         protected override void OnModelCreating(ModelBuilder modelBuilder) //when the model is creating
         {
             base.OnModelCreating(modelBuilder);
@@ -34,6 +35,6 @@ namespace COMP003B.SP25.FinalProject.DomingosC.Data
                 .WithMany(m => m.BookingMechanics)
                 .HasForeignKey(bm => bm.MechanicId);
         }
-        public DbSet<COMP003B.SP25.FinalProject.DomingosC.Models.BookingMechanic> BookingMechanic { get; set; } = default!;
+       
     }
 }

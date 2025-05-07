@@ -7,84 +7,116 @@ namespace COMP003B.SP25.FinalProject.DomingosC.Controllers.Api
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BookingsApiController : ControllerBase //sub of controllerbase
+    public class BookingsApiController : ControllerBase
     {
-        private readonly ApplicationDbContext _context; //makes the content read only
+        private readonly ApplicationDbContext _context; //cannot be changed on this code string
 
         public BookingsApiController(ApplicationDbContext context)
         {
-            _context = context; //Adds the content for the applicationdbcontext
+            _context = context;
         }
 
-        [HttpGet] //gets or creates the booking model
-        public async Task<ActionResult<IEnumerable<Booking>>> Get() => await _context.Bookings.ToListAsync();
+        //this setup is for the bookings part and below it is for the mechanics
+        [HttpGet("bookings")]
+        public async Task<ActionResult<IEnumerable<Booking>>> GetBookings() => await _context.Bookings.ToListAsync();
 
-        [HttpGet("{id}")] //recieves the specific Id left by the booking model
-        public async Task<ActionResult<Booking>> Get(int id)
+        [HttpGet("bookings/{id}")] //gets the id for the booking created
+        public async Task<ActionResult<Booking>> GetBooking(int id)
         {
             var booking = await _context.Bookings.FindAsync(id);
-            if (booking == null) return NotFound();
-            return booking; //makes sure the id is present and if not then it tries again
+            if (booking == null) return NotFound(); //if no booking then bad
+            return booking;
         }
 
-        [HttpPost] //makes sure that the booking is correct and if so gives the correct page
-        public async Task<ActionResult<Booking>> Post(Booking booking)
+        [HttpPost("bookings")] //starts the creation process for the booking
+        public async Task<ActionResult<Booking>> PostBooking(Booking booking)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState); //bad request = no booking
-            }
-
+            if (!ModelState.IsValid) return BadRequest(ModelState); //this was throwig so many errors I wanted to rip my hair out
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(Get), new { id = booking.Id }, booking); //Gets the name of the booking to display
+            return CreatedAtAction(nameof(GetBooking), new { id = booking.Id }, booking); //creates the booking
         }
 
-        [HttpPut("{id}")] //Gives the booking the real id for use
-        public async Task<IActionResult> Put(int id, Booking booking)
+        [HttpPut("bookings/{id}")] //puts the new booking in the database
+        public async Task<IActionResult> PutBooking(int id, Booking booking)
         {
-            if (id != booking.Id)
-            {
-                return BadRequest(); //id created and booking id must be the same
-            }
-
+            if (id != booking.Id) return BadRequest();
             _context.Entry(booking).State = EntityState.Modified;
 
             try
             {
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
+            } catch (DbUpdateConcurrencyException)
             {
-                if (!_context.Bookings.Any(b => b.Id == id))
-                {
-                    return NotFound(); //this is simply a string to catch any of the error that might prop up
-                }
-                else
-                {
-                    throw;
-                }
+                if (!_context.Bookings.Any(b => b.Id == id)) return NotFound(); //if no bookings were found then declare not found
+                else throw;
             }
-
             return NoContent();
         }
 
-        [HttpDelete("{id}")] //this is the method that allows deletion of entries
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("bookings/{id}")] //allows for the deletion of bookings
+        public async Task<IActionResult> DeleteBooking(int id)
         {
             var booking = await _context.Bookings.FindAsync(id);
-
-            if (booking == null)
-            {
-                return NotFound(); //if there is no specific booking selected then return notfound of course
-            }
-
+            if (booking == null) return NotFound();
+            //finds the booking and deletes it
             _context.Bookings.Remove(booking);
-            await _context.SaveChangesAsync(); //simply removes the booking listing
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
+        //mechanics was throwing a lot of errors so I decided to merge the bookind and mechanics api controllers
+        //i pretty much just copied and pasted the sections from the booking strings
+        [HttpGet("mechanics")]
+        public async Task<ActionResult<IEnumerable<Mechanic>>> GetMechanics() => await _context.Mechanics.ToListAsync();
+
+        [HttpGet("mechanics/{id}")]
+        public async Task<ActionResult<Mechanic>> GetMechanic(int id)
+        {
+            var mechanic = await _context.Mechanics.FindAsync(id);
+            if (mechanic == null) return NotFound(); //recieves the id for the mechanic and makes sure it isnt null
+            return mechanic;
+        }
+
+        [HttpPost("mechanics")]
+        public async Task<ActionResult<Mechanic>> PostMechanic(Mechanic mechanic)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            _context.Mechanics.Add(mechanic); //allows for the mechanic to be created 
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetMechanic), new { id = mechanic.Id }, mechanic);
+        }
+
+        [HttpPut("mechanics/{id}")] //creates the mechanic with the specified id
+        public async Task<IActionResult> PutMechanic(int id, Mechanic mechanic)
+        {
+            if (id != mechanic.Id) return BadRequest();
+            _context.Entry(mechanic).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            } catch (DbUpdateConcurrencyException) //this helps with the countless errors I got
+            {
+                if (!_context.Mechanics.Any(m => m.Id == id)) return NotFound();
+                else throw;
+            }
+            return NoContent();
+        }
+
+        [HttpDelete("mechanics/{id}")] //deletion for the mechanics Id
+        public async Task<IActionResult> DeleteMechanic(int id)
+        {
+            var mechanic = await _context.Mechanics.FindAsync(id);
+            if (mechanic == null) return NotFound();
+
+            _context.Mechanics.Remove(mechanic);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }

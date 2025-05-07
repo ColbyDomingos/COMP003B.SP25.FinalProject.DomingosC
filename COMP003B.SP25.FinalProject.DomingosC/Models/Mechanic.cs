@@ -1,15 +1,26 @@
-﻿namespace COMP003B.SP25.FinalProject.DomingosC.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace COMP003B.SP25.FinalProject.DomingosC.Models
 {
     public class Mechanic
     {
         public int Id { get; set; } //sets an id for the mechanic 
-        public string FirstName { get; set; } //gives the mechanic a first name
-        public string LastName { get; set; } //gives the mechanic a last name
-        public string Email { get; set; } //gives the email of the mechanic 
-        public string Phone { get; set; }//gives the phone number for the mechanic
 
-        public string Speciality { get; set; } //gives the mechanic a speciality (Added on second migration for a migration add)
+        [Required]
+        public string FirstName { get; set; } = string.Empty;//gives the mechanic a first name
 
-        public ICollection<BookingMechanic> BookingMechanics { get; set; } //connects with the booking system.
+        [Required]
+        public string LastName { get; set; } = string.Empty;//gives the mechanic a last name
+
+        [Required, EmailAddress]
+        public string Email { get; set; } = string.Empty;//gives the email of the mechanic 
+
+        [Required, Phone]
+        public string Phone { get; set; } = string.Empty;//gives the phone number for the mechanic
+
+        [Required]
+        public string Speciality { get; set; } = string.Empty;//gives the mechanic a speciality (Added on second migration for a migration add)
+
+        public ICollection<BookingMechanic> BookingMechanics { get; set; } = new List<BookingMechanic>();//connects with the booking system.
     }
 }
