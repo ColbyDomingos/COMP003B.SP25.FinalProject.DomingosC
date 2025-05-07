@@ -16,6 +16,8 @@
             var startTime = DateTime.UtcNow;
             await _next(context);
 
+
+
             var duration = DateTime.UtcNow - startTime;
             _logger.LogInformation($"Request: {context.Request.Method} {context.Request.Path} took {duration.TotalMilliseconds} ms"); //displays to console what happens
         }
